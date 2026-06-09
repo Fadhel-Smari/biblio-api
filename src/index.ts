@@ -100,6 +100,24 @@ async function corrigerAnnee(id: number, nouvelleAnnee: number) {
     });
 }
 
+/** 
+ * DELETE
+ * Fonctions pour supprimer un livre ou plusieurs livres de la base de données
+ */
+
+// Supprimer un livre par id
+async function supprimerLivre(id: number) {
+    return prisma.livre.delete({
+        where: { id },
+    });
+}
+// Supprimer tous les livres antérieurs à une année
+async function supprimerAnciens(avantAnnee: number) {
+    return prisma.livre.deleteMany({
+        where: { annee: { lt: avantAnnee } },
+    });
+}
+
 async function main() {
     // await seed();
 
@@ -119,6 +137,10 @@ async function main() {
     // UPDATE - Test des Updates
     console.log(await marquerIndisponible(1));
     console.log(await corrigerAnnee(2, 2024));
+
+    // DELETE - Test des Deletes
+    // console.log(await supprimerLivre(3));
+    // console.log(await supprimerAnciens(1950));
 
     await prisma.$disconnect();
 }
