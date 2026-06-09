@@ -79,6 +79,27 @@ async function chercherParAuteur(motCle: string) {
     });
 }
 
+/** 
+ * UPDATE
+ * Fonctions pour mettre à jour un livre dans la base de données
+ */
+
+ // Marquer un livre comme indisponible (emprunté)
+async function marquerIndisponible(id: number) {
+    return prisma.livre.update({
+        where: { id },
+        data: { disponible: false },
+    });
+}
+
+// Corriger l’année d’un livre
+async function corrigerAnnee(id: number, nouvelleAnnee: number) {
+    return prisma.livre.update({
+        where: { id },
+        data: { annee: nouvelleAnnee },
+    });
+}
+
 async function main() {
     // await seed();
 
@@ -94,6 +115,10 @@ async function main() {
 
     console.log("\n---Recherche : ’saint’---");
     console.log(await chercherParAuteur("saint"));
+
+    // UPDATE - Test des Updates
+    console.log(await marquerIndisponible(1));
+    console.log(await corrigerAnnee(2, 2024));
 
     await prisma.$disconnect();
 }
